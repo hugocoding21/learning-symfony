@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	Modifier un evenement-
+	{{parent()}}
+{% endblock %}
+{% block body %}
+
+	<div class="w-25 m-auto ">
+		{{ form_start(form) }}
+
+		<div class="row">
+			<div class="col-lg-6">
+				{{ form_row(form.startAt) }}
+			</div>
+			<div class="col-lg-6">
+				{{ form_row(form.endAt) }}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6">
+				{{ form_row(form.place) }}
+				{{ form_row(form.price) }}
+				{{ form_row(form.posterFile) }}
+			</div>
+			<div class="col-lg-6">
+				{{ form_row(form.categories) }}
+			</div>
+		</div>
+		{{ form_widget(form) }}
+		<div class="text-right">
+			<button class="btn btn-primary" formnovalidate>Modifier</button>
+		</div>
+
+		{{ form_end(form) }}
+	</div>
+{% endblock %}

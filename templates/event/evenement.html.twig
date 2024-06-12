@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<a class="btn btn-primary m-auto w-fit" href="{{ path('event_create') }}">Créer un événement</a>
+	<div class=" mt-5">
+		{% for event in events %}
+			<div class="col-lg-4 mb-4 m-auto">
+				{% if event.poster %}
+					<img class="card-img-top " src="{{asset('image/events/' ~ event.poster )}}" alt="{{event.name}}">
+
+				{% endif %}
+				<div class="card shadow">
+					<div class="card-body">
+						<a href="{{ path('app_eventId', {id: event.id }) }}">{{ event.name }}</a>
+						<p>
+							{{ 'Du ' ~ event.startAt.format('d/m/Y à H\\hi') ~ ' au ' ~ event.endAt.format('d/m/Y à H\\hi') }}</p>
+
+						{% if event.startAt <= date() and event.endAt > date() %}
+							<span class="badge bg-warning text-dark">
+								En cours</span>
+						{% elseif event.endAt < date() %}
+							<span class="badge bg-danger">Passé</span>
+						{% else %}
+							<span class="badge bg-success">Futur</span>
+						{% endif %}
+
+						{% if event.price %}
+							<span class="text-black">
+								{{ event.price | format_currency('EUR', locale='fr') }}
+							</span>
+						{% endif %}
+
+						{% if event.place %}
+							<span class="text-black">{{event.place.city}}</span>
+						{% endif %}
+
+						<div class="mt-4">
+							<a class="btn btn-primary" href="{{ path('app_eventId', { id: event.id }) }}">Voir</a>
+							<a class="btn btn-success" href="{{ path('event_edit', { id: event.id }) }}">Modifier</a>
+							<form class="d-inline" action="{{ path('event_delete', { id: event.id }) }}">
+								<input type="hidden" name="token" value="{{ csrf_token('delete-' ~ event.id) }}">
+								<button class="btn btn-danger">Supprimer</button>
+							</form>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		{% endfor %}
+	</div>
+{% endblock %}
